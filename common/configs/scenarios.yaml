@@ -1,0 +1,42 @@
+# ============================================================================
+# Scenario registry: staged CCTV videos with annotated ground-truth t_onset.
+#
+# t_onset_frame = 0-based index of the first frame in which the weapon is
+# visible in the field of view (annotated manually on the source video).
+#
+# Tags (used for the miss-rate heatmap and subgroup analysis):
+#   lighting: day | dusk
+#   distance: near | far
+#   occlusion: true | false
+#
+# The `synthetic-*` scenarios are generated programmatically by
+# scripts/make_synthetic.py so the whole pipeline can be developed and unit
+# tested without real footage. Replace/extend with real staged scenarios for
+# the production experiment.
+# ============================================================================
+
+scenarios:
+  - id: synthetic-day-near
+    file: data/synthetic/synthetic-day-near.mp4
+    fps: 25
+    t_onset_frame: 75          # object appears at t = 3.0 s
+    duration_s: 12
+    tags: { lighting: day, distance: near, occlusion: false }
+
+  - id: synthetic-dusk-far
+    file: data/synthetic/synthetic-dusk-far.mp4
+    fps: 25
+    t_onset_frame: 100         # object appears at t = 4.0 s
+    duration_s: 12
+    tags: { lighting: dusk, distance: far, occlusion: false }
+
+# --- Real staged scenarios (fill in when footage is available) ---------------
+#  - id: s01-day-near-noocc
+#    file: data/real/s01.mp4
+#    fps: 25
+#    t_onset_frame: 214
+#    duration_s: 45
+#    tags: { lighting: day, distance: near, occlusion: false }
+
+# Which scenario ids take part in the matrix
+active_scenarios: [synthetic-day-near, synthetic-dusk-far]

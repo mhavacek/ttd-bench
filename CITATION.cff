@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use TTD-Bench, please cite it as below."
+type: software
+title: "TTD-Bench: a replay-based benchmark for time-to-detection decomposition of CCTV weapon-detection pipelines"
+authors:
+  - family-names: "Haváček"
+    given-names: "Martin"
+    orcid: "https://orcid.org/0000-0002-1276-2702"
+    affiliation: "VŠB – Technical University of Ostrava"
+repository-code: "https://github.com/mhavacek/ttd-bench"
+license: MIT
+keywords:
+  - time-to-detection
+  - weapon detection
+  - CCTV
+  - latency decomposition
+  - edge computing
+  - network emulation
+  - benchmark

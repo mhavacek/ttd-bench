@@ -1,0 +1,18 @@
+# environment / build
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.DS_Store
+
+# large binaries — never in git
+*.pt
+*.onnx
+*.zip
+clanek-2-ttdbench/checkpoints/
+clanek-2-ttdbench/third_party/
+clanek-2-ttdbench/data/
+
+# measurement data are available on request, not in git
+results/

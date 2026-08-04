@@ -1,0 +1,87 @@
+# ============================================================================
+# TTD-Bench — PHASE 2 / SCVD (event-level TTD on real weapon footage)
+# ============================================================================
+# Full experiment on the SCVD Weaponized clips with student-verified onsets:
+# event-level TTD, its 5-component decomposition, hit/miss and miss rate per
+# deployment configuration.
+#
+# PREREQUISITE — WEAPON CHECKPOINTS:
+#   This needs detectors that recognise the "weapon"/pistol/knife classes.
+#   With COCO-pretrained weights the alarm never fires (all miss). Put the
+#   fine-tuned checkpoints in checkpoints/ and list them under `models` /
+#   `active_models` below. Until then, run the Phase-1 latency pilot
+#   (configs/experiment-phase1.yaml) which does not need weapon classes.
+# ============================================================================
+
+experiment_name: ttd-bench-scvd
+
+alarm:
+  # supplied checkpoints (Zenodo training) detect classes: Knife, Handgun
+  # (matching is case-insensitive; "handgun" added so the alarm can fire)
+  weapon_class_names: ["weapon", "pistol", "knife", "gun", "rifle", "handgun"]
+  confidence_threshold: 0.5
+  k_consecutive: 3
+  timeout_s: 30.0
+
+repetitions: 5            # >= 5 per the statistical framework (§3)
+seed_base: 42
+
+deployments:
+  - name: local-gpu
+    backend: ultralytics
+    device: cuda:0
+    remote: false
+  - name: edge-sim
+    backend: onnxruntime
+    device: cpu
+    cpu_threads: 2
+    remote: false
+  - name: remote
+    backend: ultralytics
+    device: cuda:0
+    remote: true
+    network_profiles: [lan, wifi, cellular-4g]
+
+# Weapon checkpoints from the Zenodo training runs (Data-zenodo/run_{ver}_{size});
+# classes: Knife, Handgun; imgsz 640; all 12 wired, choose via active_models.
+models:
+  - {name: yolov8s-weapon,  weights: checkpoints/yolov8s-weapon.pt,  onnx: checkpoints/yolov8s-weapon.onnx}
+  - {name: yolov8m-weapon,  weights: checkpoints/yolov8m-weapon.pt,  onnx: checkpoints/yolov8m-weapon.onnx}
+  - {name: yolov8l-weapon,  weights: checkpoints/yolov8l-weapon.pt,  onnx: checkpoints/yolov8l-weapon.onnx}
+  - {name: yolov10s-weapon, weights: checkpoints/yolov10s-weapon.pt, onnx: checkpoints/yolov10s-weapon.onnx}
+  - {name: yolov10m-weapon, weights: checkpoints/yolov10m-weapon.pt, onnx: checkpoints/yolov10m-weapon.onnx}
+  - {name: yolov10l-weapon, weights: checkpoints/yolov10l-weapon.pt, onnx: checkpoints/yolov10l-weapon.onnx}
+  - {name: yolov12s-weapon, weights: checkpoints/yolov12s-weapon.pt, onnx: checkpoints/yolov12s-weapon.onnx}
+  - {name: yolov12m-weapon, weights: checkpoints/yolov12m-weapon.pt, onnx: checkpoints/yolov12m-weapon.onnx}
+  - {name: yolov12l-weapon, weights: checkpoints/yolov12l-weapon.pt, onnx: checkpoints/yolov12l-weapon.onnx}
+  - {name: yolov26s-weapon, weights: checkpoints/yolov26s-weapon.pt, onnx: checkpoints/yolov26s-weapon.onnx}
+  - {name: yolov26m-weapon, weights: checkpoints/yolov26m-weapon.pt, onnx: checkpoints/yolov26m-weapon.onnx}
+  - {name: yolov26l-weapon, weights: checkpoints/yolov26l-weapon.pt, onnx: checkpoints/yolov26l-weapon.onnx}
+
+# Default active set (4 models = 3400 cells with 5 reps): spans architecture
+# generations (v8 -> v26) at medium size + one small for the size axis, and
+# keeps yolov8m overlap with the Phase-1 latency columns. ONNX exported for
+# these four. Adjust freely; export ONNX for any model you add.
+active_models: [yolov8s-weapon, yolov8m-weapon, yolov12m-weapon, yolov26m-weapon]
+
+scenarios_file: configs/scenarios-scvd.yaml
+network_profiles_file: configs/network_profiles.yaml
+
+replay:
+  mode: rtsp
+  rtsp_port: 8554
+  rtsp_path: cam
+  mediamtx_binary: third_party/mediamtx
+  encoder: libx264
+  encoder_preset: ultrafast
+  encoder_tune: zerolatency
+
+ingest:
+  queue_size: 1
+
+remote:
+  server_port: 8760
+  proxy_port: 8761
+  jpeg_quality: 90
+
+results_dir: results-scvd

@@ -1,0 +1,87 @@
+# ============================================================================
+# TTD-Bench — main experiment matrix
+# ============================================================================
+# The full matrix is the cross product:
+#   deployment × (network profile, remote only) × model × scenario × repetition
+# Cells are enumerated deterministically (see ttdbench.config.enumerate_cells);
+# HPC array jobs map their array index to a cell via `--cell-index N`.
+# ============================================================================
+
+experiment_name: ttd-bench-v1
+
+# --- Alarm definition (§2) --------------------------------------------------
+alarm:
+  weapon_class_names: ["weapon", "pistol", "knife", "gun", "rifle"]  # any of these counts
+  confidence_threshold: 0.5
+  k_consecutive: 3            # alarm after K consecutive frames with a detection
+  timeout_s: 30.0             # miss if no alarm within timeout after t_onset
+
+# --- Repetitions & determinism ----------------------------------------------
+repetitions: 5                # >= 5 independent replays per cell
+seed_base: 42                 # per-run seed = seed_base + repetition_index
+
+# --- Deployment configurations (§2) ------------------------------------------
+deployments:
+  - name: local-gpu
+    backend: ultralytics      # ultralytics | onnxruntime | synthetic
+    device: cuda:0
+    remote: false
+  - name: edge-sim
+    backend: onnxruntime
+    device: cpu
+    cpu_threads: 2            # ONNX Runtime intra-op thread limit (edge simulation)
+    remote: false
+  - name: remote
+    backend: ultralytics
+    device: cuda:0
+    remote: true              # inference in a separate process behind netproxy
+    network_profiles: [lan, wifi, cellular-4g]   # keys into network_profiles.yaml
+
+# --- Models -------------------------------------------------------------------
+# Paths are relative to the repo root unless absolute. .pt -> ultralytics
+# backend, .onnx -> onnxruntime backend. The `synthetic` model needs no file
+# and is used for development / pipeline validation without real checkpoints.
+models:
+  - name: synthetic
+    weights: null             # threshold-based detector for the synthetic scenario
+  - name: yolov8n
+    weights: checkpoints/yolov8n-weapon.pt
+    onnx: checkpoints/yolov8n-weapon.onnx
+  - name: yolov8m
+    weights: checkpoints/yolov8m-weapon.pt
+    onnx: checkpoints/yolov8m-weapon.onnx
+  - name: yolov12
+    weights: checkpoints/yolov12-weapon.pt
+    onnx: checkpoints/yolov12-weapon.onnx
+  - name: rtdetr
+    weights: checkpoints/rtdetr-weapon.pt
+    onnx: checkpoints/rtdetr-weapon.onnx
+
+# Which model names take part in the matrix (edit freely; `synthetic` only for dev)
+active_models: [synthetic]
+
+# --- Scenario set --------------------------------------------------------------
+scenarios_file: configs/scenarios.yaml
+network_profiles_file: configs/network_profiles.yaml
+
+# --- Replay / ingest -----------------------------------------------------------
+replay:
+  mode: rtsp                  # rtsp (mediamtx + ffmpeg, production) | direct (dev fallback)
+  rtsp_port: 8554             # unprivileged port
+  rtsp_path: cam
+  mediamtx_binary: third_party/mediamtx   # fetched by scripts/fetch_mediamtx.sh
+  encoder: libx264
+  encoder_preset: ultrafast
+  encoder_tune: zerolatency
+
+ingest:
+  queue_size: 1               # drop-oldest backpressure (frames dropped are logged)
+
+# --- Inference server (remote deployment) ---------------------------------------
+remote:
+  server_port: 8760           # inference server (behind proxy)
+  proxy_port: 8761            # netproxy listen port (client connects here)
+  jpeg_quality: 90
+
+# --- Output ----------------------------------------------------------------------
+results_dir: results

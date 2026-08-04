@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ttdbench"
+version = "0.1.0"
+description = "TTD-Bench: empirical validation of Time-to-Detection decomposition across deployment configurations for CCTV weapon detectors"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24,<3",
+    "opencv-python-headless>=4.8,<5",
+    "scipy>=1.11,<2",
+    "pandas>=2.0,<3",
+    "matplotlib>=3.7,<4",
+    "pyyaml>=6.0,<7",
+    "jinja2>=3.1,<4",  # pandas.DataFrame.to_latex
+    "lifelines>=0.30.3,<0.31",   # survival_phase2.py (KM, Cox)
+    "statsmodels>=0.14.6,<0.15", # survival_phase2.py, threshold_sweep.py
+]
+
+[project.optional-dependencies]
+# ML backends are optional so the timing/statistics pipeline can be
+# developed and unit-tested without pulling in torch (~2 GB).
+ml = [
+    "ultralytics>=8.2,<9",
+    "onnxruntime>=1.17,<2",
+]
+dev = [
+    "pytest>=7.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

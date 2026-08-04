@@ -1,0 +1,72 @@
+# ============================================================================
+# TTD-Bench — PHASE 1, modern-GPU column
+# ============================================================================
+# Companion to experiment-phase1-final.yaml: the SAME local-GPU deployment and
+# models, executed on a modern datacenter GPU (e.g. A40/A100) instead of the
+# GTX 1080 Ti cluster. Purpose: show that the real-time boundary is a function
+# of hardware — RT-DETR is marginal at 30 fps on a 2017 GPU and comfortable on
+# a modern one — which the decomposition localizes to dt_infer. This turns the
+# most attackable finding ("RT-DETR misses the frame period") into the most
+# general one ("the decomposition locates the real-time boundary per
+# deployment").
+#
+# The deployment is named `local-gpu-modern` so run_ids and config labels
+# never collide with the 1080 Ti column; the exact GPU model is recorded in
+# every raw-log header (provenance), so the paper can label the column with
+# the concrete card used.
+#
+# Matrix: 1 deployment x 3 models x 3 scenarios x 5 reps = 45 cells.
+# Submit pinned to ONE modern-GPU cluster (see docs/PHASE1-FINAL.md).
+# ============================================================================
+
+experiment_name: ttd-bench-phase1-moderngpu
+
+alarm:
+  weapon_class_names: ["weapon", "pistol", "knife", "gun", "rifle"]
+  confidence_threshold: 0.5
+  k_consecutive: 3
+  timeout_s: 30.0
+
+repetitions: 5
+seed_base: 42
+
+deployments:
+  - name: local-gpu-modern
+    backend: ultralytics
+    device: cuda:0
+    remote: false
+
+models:
+  - name: yolov8n
+    weights: checkpoints/yolov8n.pt
+    onnx: checkpoints/yolov8n.onnx
+  - name: yolov8m
+    weights: checkpoints/yolov8m.pt
+    onnx: checkpoints/yolov8m.onnx
+  - name: rtdetr
+    weights: checkpoints/rtdetr.pt
+    onnx: checkpoints/rtdetr.onnx
+
+active_models: [yolov8n, yolov8m, rtdetr]
+
+scenarios_file: configs/scenarios-ucf-phase1.yaml
+network_profiles_file: configs/network_profiles.yaml
+
+replay:
+  mode: rtsp
+  rtsp_port: 8554
+  rtsp_path: cam
+  mediamtx_binary: third_party/mediamtx
+  encoder: libx264
+  encoder_preset: ultrafast
+  encoder_tune: zerolatency
+
+ingest:
+  queue_size: 1
+
+remote:
+  server_port: 8760
+  proxy_port: 8761
+  jpeg_quality: 90
+
+results_dir: results-phase1-moderngpu

@@ -1,0 +1,266 @@
+scenarios:
+- id: ucf-shooting002
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting002_x264.mp4
+  fps: 30.0
+  t_onset_frame: 1020
+  duration_s: 40.2
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting004
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting004_x264.mp4
+  fps: 30.0
+  t_onset_frame: 500
+  duration_s: 59.8
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting008
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting008_x264.mp4
+  fps: 30.0
+  t_onset_frame: 75
+  duration_s: 54.2
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting010
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting010_x264.mp4
+  fps: 30.0
+  t_onset_frame: 1095
+  duration_s: 88.0
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting011
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting011_x264.mp4
+  fps: 30.0
+  t_onset_frame: 1480
+  duration_s: 133.4
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting013
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting013_x264.mp4
+  fps: 30.0
+  t_onset_frame: 860
+  duration_s: 35.8
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting015
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting015_x264.mp4
+  fps: 30.0
+  t_onset_frame: 855
+  duration_s: 57.1
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting018
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting018_x264.mp4
+  fps: 30.0
+  t_onset_frame: 315
+  duration_s: 60.0
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting019
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting019_x264.mp4
+  fps: 30.0
+  t_onset_frame: 1020
+  duration_s: 91.9
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting021
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting021_x264.mp4
+  fps: 30.0
+  t_onset_frame: 480
+  duration_s: 42.5
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting022
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting022_x264.mp4
+  fps: 30.0
+  t_onset_frame: 2850
+  duration_s: 151.8
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting024
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting024_x264.mp4
+  fps: 30.0
+  t_onset_frame: 720
+  duration_s: 66.8
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting026
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting026_x264.mp4
+  fps: 30.0
+  t_onset_frame: 195
+  duration_s: 46.8
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting028
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting028_x264.mp4
+  fps: 30.0
+  t_onset_frame: 285
+  duration_s: 63.3
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting032
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting032_x264.mp4
+  fps: 30.0
+  t_onset_frame: 7995
+  duration_s: 722.7
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting033
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting033_x264.mp4
+  fps: 30.0
+  t_onset_frame: 1680
+  duration_s: 121.0
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting034
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting034_x264.mp4
+  fps: 30.0
+  t_onset_frame: 960
+  duration_s: 47.0
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting037
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting037_x264.mp4
+  fps: 30.0
+  t_onset_frame: 140
+  duration_s: 10.2
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting043
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting043_x264.mp4
+  fps: 30.0
+  t_onset_frame: 945
+  duration_s: 62.5
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting046
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting046_x264.mp4
+  fps: 30.0
+  t_onset_frame: 4005
+  duration_s: 169.6
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting047
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting047_x264.mp4
+  fps: 30.0
+  t_onset_frame: 2160
+  duration_s: 276.2
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting048
+  file: /Users/macbook/Datasets/ttd-bench/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting048_x264.mp4
+  fps: 30.0
+  t_onset_frame: 1410
+  duration_s: 91.4
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+active_scenarios:
+- ucf-shooting002
+- ucf-shooting004
+- ucf-shooting008
+- ucf-shooting010
+- ucf-shooting011
+- ucf-shooting013
+- ucf-shooting015
+- ucf-shooting018
+- ucf-shooting019
+- ucf-shooting021
+- ucf-shooting022
+- ucf-shooting024
+- ucf-shooting026
+- ucf-shooting028
+- ucf-shooting032
+- ucf-shooting033
+- ucf-shooting034
+- ucf-shooting037
+- ucf-shooting043
+- ucf-shooting046
+- ucf-shooting047
+- ucf-shooting048
