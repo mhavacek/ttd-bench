@@ -34,19 +34,9 @@ import numpy as np
 from . import marker
 from .logio import RawLogWriter, now_ns
 
-# `protocols: [tcp]` is load-bearing, not tidiness. Without it mediamtx also
-# binds its default RTP/RTCP ports :8000/:8001, which nothing here
-# parameterises — so two jobs on one node collide on :8000 and the second one
-# dies at start(), before a single frame is decoded. The retry loop below
-# cannot help: it randomises the *TCP* port only. That is the whole cause of
-# the 869 zero-frame runs of 2026-07 (docs/DIAGNOSTIKA-VYPADKU.md).
-# It is measurement-neutral: both ends of the chain already force TCP
-# (ingest.py OPENCV_FFMPEG_CAPTURE_OPTIONS, RTSPReplay's -rtsp_transport),
-# so those UDP ports never carried a byte.
 MEDIAMTX_CONFIG = """\
 logLevel: warn
 rtspAddress: :{port}
-protocols: [tcp]
 hls: no
 rtmp: no
 webrtc: no

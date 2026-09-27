@@ -28,7 +28,7 @@ from .alarm import AlarmLogic
 from .config import Cell, ExperimentConfig
 from .inference import RemoteBackendClient, _require_checkpoint, build_backend
 from .ingest import DirectIngest, RTSPIngest
-from .logio import RawLogWriter, gpu_compute_apps, now_ns, provenance_header
+from .logio import RawLogWriter, now_ns, provenance_header
 from .netproxy import NetProxy
 from .replay import DirectReplay, MediaMTX, RTSPReplay
 
@@ -270,10 +270,7 @@ def run_cell(
         log.write({"type": "end", "t": now_ns(), "reason": end_reason,
                    "n_received": getattr(ingest, "n_received", None),
                    "n_dropped": getattr(ingest, "n_dropped", None),
-                   "n_unreadable": getattr(ingest, "n_unreadable", None),
-                   # paired with the header's snapshot: a sibling that appears
-                   # or leaves mid-run shows up as a difference between the two
-                   "gpu_compute_apps": gpu_compute_apps()})
+                   "n_unreadable": getattr(ingest, "n_unreadable", None)})
         try:
             ingest.stop()
             replay.join(timeout=15)
