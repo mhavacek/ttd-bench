@@ -1,0 +1,41 @@
+_note: Phase-1 pilot subset (COCO latency profiling); UCF onsets are preliminary/unverified
+  — event-level TTD is NOT the Phase-1 deliverable, per-frame latency decomposition
+  is.
+scenarios:
+- id: ucf-shooting037
+  file: /storage/brno12-cerit/home/hav0254/ttd-bench-data/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting037_x264.mp4
+  fps: 30.0
+  t_onset_frame: 140
+  duration_s: 10.2
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting013
+  file: /storage/brno12-cerit/home/hav0254/ttd-bench-data/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting013_x264.mp4
+  fps: 30.0
+  t_onset_frame: 860
+  duration_s: 35.8
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+- id: ucf-shooting002
+  file: /storage/brno12-cerit/home/hav0254/ttd-bench-data/ucf-crime/Anomaly-Videos-Part-3/Shooting/Shooting002_x264.mp4
+  fps: 30.0
+  t_onset_frame: 1020
+  duration_s: 40.2
+  tags:
+    lighting: unknown
+    distance: unknown
+    occlusion: unknown
+    source: ucf-crime
+    onset_verified: false
+active_scenarios:
+- ucf-shooting037
+- ucf-shooting013
+- ucf-shooting002

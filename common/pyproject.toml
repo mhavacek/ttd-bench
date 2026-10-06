@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ttdbench"
+version = "0.1.0"
+description = "TTD-Bench: empirical validation of Time-to-Detection decomposition across deployment configurations for CCTV weapon detectors"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24,<3",
+    "opencv-python-headless>=4.8,<5",
+    "scipy>=1.11,<2",
+    "pandas>=2.0,<3",
+    "matplotlib>=3.7,<4",
+    "pyyaml>=6.0,<7",
+    "jinja2>=3.1,<4",  # pandas.DataFrame.to_latex
+    # Analysis dependencies. These were used from the start but never declared,
+    # so a fresh environment ran the measurement fine and then failed at the
+    # first Kaplan-Meier. Versions pinned to those that produced the frozen
+    # analysis artifacts: an environment that computes survival statistics
+    # differently from the one in the paper is not a reproduction.
+    "lifelines>=0.30.3,<0.31",      # Kaplan-Meier, Cox with clustered robust SE
+    "statsmodels>=0.14.6,<0.15",    # supporting tests
+    "pyarrow>=15,<26",              # parquet engine for the trace tables
+]
+
+[project.optional-dependencies]
+# ML backends are optional so the timing/statistics pipeline can be
+# developed and unit-tested without pulling in torch (~2 GB).
+ml = [
+    "ultralytics>=8.2,<9",
+    "onnxruntime>=1.17,<2",
+]
+dev = [
+    "pytest>=7.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

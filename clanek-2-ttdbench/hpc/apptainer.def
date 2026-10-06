@@ -1,0 +1,59 @@
+Bootstrap: docker
+From: nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+
+# ============================================================================
+# TTD-Bench container (Apptainer — MetaCentrum does not support Docker).
+# Build (needs fakeroot or --remote; on MetaCentrum frontends fakeroot works):
+#   apptainer build ttd-bench.sif hpc/apptainer.def
+# Run:
+#   apptainer exec --nv ttd-bench.sif python3 scripts/run_single.py --synthetic
+# The repository itself is bind-mounted at runtime (see hpc/*_array.sh), so
+# the image only carries the environment: python + pinned deps + ffmpeg +
+# mediamtx. GPU access via --nv (host driver passthrough).
+# ============================================================================
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        python3 python3-pip python3-venv \
+        ffmpeg curl ca-certificates \
+        libglib2.0-0
+    rm -rf /var/lib/apt/lists/*
+
+    # --- mediamtx (RTSP server, unprivileged) -------------------------------
+    MTX_VERSION=v1.9.3
+    ARCH=$(uname -m); case "$ARCH" in x86_64) ARCH=amd64;; aarch64) ARCH=arm64;; esac
+    curl -fsSL -o /tmp/mtx.tar.gz \
+        "https://github.com/bluenviron/mediamtx/releases/download/${MTX_VERSION}/mediamtx_${MTX_VERSION}_linux_${ARCH}.tar.gz"
+    tar -xzf /tmp/mtx.tar.gz -C /usr/local/bin mediamtx
+    rm /tmp/mtx.tar.gz
+
+    # --- python environment (versions pinned for reproducibility) ----------
+    python3 -m pip install --no-cache-dir --upgrade pip
+    python3 -m pip install --no-cache-dir \
+        "numpy==1.26.4" \
+        "opencv-python-headless==4.10.0.84" \
+        "scipy==1.13.1" \
+        "pandas==2.2.2" \
+        "matplotlib==3.9.0" \
+        "pyyaml==6.0.1" \
+        "jinja2==3.1.4" \
+        "pytest==8.2.2" \
+        "ultralytics==8.2.103" \
+        "onnxruntime==1.18.1"
+
+%environment
+    export PYTHONPATH=/workspace/src:$PYTHONPATH
+    export MPLBACKEND=Agg
+    # runner looks for mediamtx at third_party/mediamtx by default; inside the
+    # container it is on PATH — point the config there or symlink at runtime.
+
+%labels
+    Author TTD-Bench
+    Description Reproducible environment for TTD decomposition experiments
+
+%help
+    TTD-Bench runtime environment: Python 3.10 + pinned scientific stack,
+    ffmpeg, mediamtx, ultralytics (GPU via --nv), onnxruntime (CPU).
+    Bind-mount the repository and run scripts/run_single.py.

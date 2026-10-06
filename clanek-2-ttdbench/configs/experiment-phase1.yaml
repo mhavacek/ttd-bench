@@ -1,0 +1,84 @@
+# ============================================================================
+# TTD-Bench — PHASE 1 (latency pilot)
+# ============================================================================
+# Goal: measure the deployment-configuration effect on the PER-FRAME latency
+# decomposition (dt_acq / dt_transfer / dt_infer / dt_post, drop rate) with
+# COCO-pretrained detectors on real CCTV video (UCF-Crime Shooting subset).
+#
+# Why this is valid before weapon checkpoints / verified onsets exist:
+#   - per-frame latencies depend on the ARCHITECTURE, not the trained classes,
+#     so YOLOv8n/m and RT-DETR give final-quality timing numbers;
+#   - the central hypothesis (identical architecture -> different TTD by
+#     deployment) is carried mostly by dt_infer + dt_transfer, both measured
+#     here.
+# Event-level TTD / miss rate / heatmap need the weapon class + verified
+# onsets and are produced in Phase 2 (same raw-log format, additive re-run).
+#
+# The alarm never fires here (COCO has no weapon class) -> every run is a
+# "miss" at the event level; that is expected. Use the pf_* columns / the
+# Phase-1 figures (scripts/make_paper_assets.py --phase1).
+# ============================================================================
+
+experiment_name: ttd-bench-phase1
+
+alarm:
+  # unchanged parameters (K / threshold / timeout) so Phase 1 and Phase 2 stay
+  # comparable; the weapon class list simply matches nothing under COCO.
+  weapon_class_names: ["weapon", "pistol", "knife", "gun", "rifle"]
+  confidence_threshold: 0.5
+  k_consecutive: 3
+  timeout_s: 30.0
+
+repetitions: 3            # pilot; raise to >= 5 for the definitive Phase-1 run
+seed_base: 42
+
+deployments:
+  - name: local-gpu
+    backend: ultralytics
+    device: cuda:0
+    remote: false
+  - name: edge-sim
+    backend: onnxruntime
+    device: cpu
+    cpu_threads: 2
+    remote: false
+  - name: remote
+    backend: ultralytics
+    device: cuda:0
+    remote: true
+    network_profiles: [lan, wifi, cellular-4g]
+
+models:
+  - name: yolov8n
+    weights: checkpoints/yolov8n.pt
+    onnx: checkpoints/yolov8n.onnx
+  - name: yolov8m
+    weights: checkpoints/yolov8m.pt
+    onnx: checkpoints/yolov8m.onnx
+  - name: rtdetr
+    weights: checkpoints/rtdetr.pt
+    onnx: checkpoints/rtdetr.onnx
+
+active_models: [yolov8n, yolov8m, rtdetr]
+
+scenarios_file: configs/scenarios-ucf-phase1.yaml
+network_profiles_file: configs/network_profiles.yaml
+
+replay:
+  mode: rtsp
+  rtsp_port: 8554
+  rtsp_path: cam
+  mediamtx_binary: third_party/mediamtx
+  encoder: libx264
+  encoder_preset: ultrafast
+  encoder_tune: zerolatency
+
+ingest:
+  queue_size: 1
+
+remote:
+  server_port: 8760
+  proxy_port: 8761
+  jpeg_quality: 90
+
+results_dir: results-phase1

@@ -1,0 +1,34 @@
+# ============================================================================
+# Network emulation profiles for the `remote` deployment configuration.
+#
+# Applied by ttdbench.netproxy — a userspace TCP proxy (no root, no tc/netem).
+# One-way delay = rtt_ms / 2 + N(0, jitter_ms) per forwarded chunk, applied in
+# BOTH directions (so the round trip sees the full RTT ± jitter).
+#
+# Loss emulation note (documented limitation): a userspace TCP proxy cannot
+# drop individual IP packets — TCP would retransmit them transparently anyway.
+# The externally observable effect of packet loss on an established TCP stream
+# is added latency (retransmission + recovery). We therefore emulate loss as:
+# with probability loss_pct/100 per forwarded chunk, an additional penalty
+# delay of loss_penalty_ms is applied (default ≈ typical RTO/fast-retransmit
+# recovery). This is stated explicitly in the paper's methodology.
+# ============================================================================
+
+profiles:
+  lan:
+    rtt_ms: 1.0
+    jitter_ms: 0.0
+    loss_pct: 0.0
+    loss_penalty_ms: 0.0
+
+  wifi:
+    rtt_ms: 15.0
+    jitter_ms: 5.0
+    loss_pct: 0.5
+    loss_penalty_ms: 50.0
+
+  cellular-4g:
+    rtt_ms: 60.0
+    jitter_ms: 20.0
+    loss_pct: 1.0
+    loss_penalty_ms: 200.0
